@@ -8,6 +8,7 @@ import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
 import { LoadingUtil } from 'src/app/utils/loading-util';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { LoadingUtil } from 'src/app/utils/loading-util';
     IonicModule,
     LoginPageRoutingModule,
 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [LoginPage],
   providers: [

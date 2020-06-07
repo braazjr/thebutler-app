@@ -12,7 +12,6 @@ export class AuthInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(req.url)
     if (!this.isPublic(req) && !localStorage.getItem('accessToken')) {
       this.router.navigate(['/login']);
     } else if (!this.isPublic(req)) {
@@ -27,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   isPublic(req) {
-    return req.url.split('/')[3] == 'auth' || (req.url.split('/')[3] == 'igrejas' && req.method == 'POST');
+    return req.url.split('/')[3] == 'oauth' || (req.url.split('/')[3] == 'igrejas' && req.method == 'POST');
   }
 }
 

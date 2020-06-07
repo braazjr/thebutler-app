@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingUtil } from 'src/app/utils/loading-util';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginPage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    // private authService: AuthService,
+    private authService: AuthService,
     private router: Router,
     private loadingUtil: LoadingUtil,
     // private events: Events
@@ -34,23 +35,23 @@ export class LoginPage implements OnInit {
   }
 
   async entrar() {
-    // const loader = await this.loadingUtil.criarLoading();
+    const loader = await this.loadingUtil.criarLoading();
 
-    // loader.present().then(() => {
-    //   this.authService.login(this.formulario.get('email').value, this.formulario.get('senha').value)
-    //     .subscribe(data => {
-    //       this.authService.setUsuarioStorage(data.accessToken).then(() => {
-    //         this.router.navigate(['/tabs']);
-    //         this.events.publish('calendario:update', undefined);
-    //       });
-    //     }, error => {
-    //       console.error(error.error);
+    loader.present().then(() => {
+      this.authService.login(this.formulario.get('email').value, this.formulario.get('senha').value)
+        .subscribe(() => {
+          // this.authService.setUsuarioStorage(data.accessToken).then(() => {
+          this.router.navigate(['/tabs']);
+          // this.events.publish('calendario:update', undefined);
+          // });
+        }, error => {
+          console.error(error);
 
-    //       this.mensagem = error.error.message;
-    //       setTimeout(() => this.mensagem = undefined, 2000);
+          this.mensagem = error.error.message;
+          setTimeout(() => this.mensagem = undefined, 2000);
 
-    //       loader.dismiss();
-    //     }, () => loader.dismiss());
-    // });
+          loader.dismiss();
+        }, () => loader.dismiss());
+    });
   }
 }
