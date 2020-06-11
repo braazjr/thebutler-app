@@ -19,24 +19,26 @@ export class AuthService {
     'Authorization': 'Basic dGhlYnV0bGVyX2FuZ3VsYXI6dGhlYnV0bGVyX2FuZ3VsYXI='
   });
 
+  jwtHelper: JwtHelperService = new JwtHelperService();
+
   constructor(
     private http: HttpClient,
     private router: Router) { }
 
-  login(usuario: String, senha: String): Observable<void> {
-    const body = `username=${usuario}&password=${senha}&grant_type=password`;
+  login(user: String, password: String): Observable<void> {
+    const body = `username=${user}&password=${password}&grant_type=password`;
 
-    console.info(`-- realizando login com o usuário ${usuario}`)
+    console.info(`-- logging in with user ${user}`)
     return this.http.post(this.oauthTokenUrl, body,
       { headers: this.hds, withCredentials: true })
       .pipe(
         map(response => {
-          console.info('-- usuário autenticado')
-          this.armazenarTokenAndRefreshToken(response as any);
+          console.info('-- authenticated user')
+          this.saveTokenAndRefreshToken(response as any);
         }),
         catchError(response => {
           if (response.status === 400 && response.error === 'invalid_grant') {
-            return Promise.reject('Usuário ou senha inválida!');
+            return Promise.reject('Invalid email or password!');
           }
 
           return Promise.reject(response);
@@ -44,17 +46,17 @@ export class AuthService {
       )
   }
 
-  private armazenarTokenAndRefreshToken(jwt: string) {
+  private saveTokenAndRefreshToken(jwt: string) {
     localStorage.setItem('token', jwt['access_token']);
     localStorage.setItem('refreshToken', jwt['refresh_token']);
   }
 
   logout() {
-    this.limparAccessToken();
+    this.clearAccessToken();
     this.router.navigate(['/auth/login']);
   }
 
-  limparAccessToken() {
+  clearAccessToken() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     this.jwtPayload = null;
@@ -67,19 +69,25 @@ export class AuthService {
     return !token || jwtHelper.isTokenExpired(token);
   }
 
-  obterNovoAccessToken() {
+  getNewAccessToken() {
     const body = `grant_type=refresh_token&refresh_token=${localStorage.getItem('refreshToken')}`;
 
     return this.http.post(this.oauthTokenUrl, body,
       { headers: this.hds, withCredentials: true })
       .pipe(
         map(response => {
-          this.armazenarTokenAndRefreshToken(response as any);
+          this.saveTokenAndRefreshToken(response as any);
         }),
         catchError(error => {
-          console.info('Erro ao renovar token.', error);
+          console.info('Error renewing token', error);
           return Promise.resolve(null);
         })
       )
+  }
+
+  getLoggedUser() {
+    if (localStorage.getItem('token') !== null) {
+      return this.jwtHelper.decodeToken(localStorage.getItem('token')).usuario;
+    }
   }
 }
