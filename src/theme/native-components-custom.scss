@@ -1,0 +1,23 @@
+// NATIVE COMPONENTS
+
+ion-button {
+    --border-radius: 64px;
+    --padding-top: 0;
+    --padding-start: 26px;
+    --padding-end: 26px;
+    --padding-bottom: 0;
+}
+
+ion-item {
+    margin: 15px 5px;
+}
+
+form {
+    ion-item {
+        --border-width: 0px 0px 2px 0px;
+        --border-radius: 20px !important;
+        --padding-start: 20px !important;
+        --padding-end: 10px !important;
+        --highlight-height: 0px;
+    }
+}
