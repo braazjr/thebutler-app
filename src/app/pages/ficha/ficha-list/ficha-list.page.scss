@@ -1,0 +1,12 @@
+.position-relative.d-inline-block {
+    z-index: 15;
+}
+
+img {
+    margin: 10px;
+    max-width: 100px;
+
+    &.img-radius {
+        border-radius: 10%;
+    }
+}

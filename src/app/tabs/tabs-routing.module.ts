@@ -24,6 +24,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/association-about/association-about.module').then(m => m.AssociationAboutPageModule)
       },
       {
+        path: 'ficha',
+        loadChildren: () => import('../pages/ficha/ficha.module').then(m => m.FichaPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'

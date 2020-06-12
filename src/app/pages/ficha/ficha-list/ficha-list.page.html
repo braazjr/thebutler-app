@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>ficha-list</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="getFichasForMorador($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Puxe para atualizar"
+      refreshingSpinner="dots" refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngFor="let ficha of fichas">
+    <ion-card-header>
+      <ion-card-subtitle>#{{ficha.id}}</ion-card-subtitle>
+      <div class="text-center ion-margin-top">
+        <ion-card-title>{{ficha.apartamento.bloco.condominio.nome}}</ion-card-title>
+        <span>{{ficha.apartamento.bloco.nome}} - {{ficha.apartamento.bloco.numero}}</span>
+        <br>
+        <span>{{ficha.apartamento.numero}}</span>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-card *ngFor="let morador of ficha.moradores">
+        <div class="text-center">
+          <div class="position-relative d-inline-block">
+            <img class="img-radius img-fluid wid-150" [src]="morador.foto64" alt="Sem foto">
+          </div>
+
+          <ion-card-content>
+            <h3 class="bold">{{morador.nome}}</h3>
+            <ion-badge color="primary">{{morador.tipoMorador ? morador.tipoMorador : morador.parentesco}}</ion-badge>
+            <p>Tel: {{morador.celular ? morador.celular : morador.telefone}}</p>
+            <p>Documento: {{morador.documento}}</p>
+            <p>E-mail: {{morador.email}}</p>
+          </ion-card-content>
+        </div>
+      </ion-card>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
