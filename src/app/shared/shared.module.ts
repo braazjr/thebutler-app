@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthInterceptorModule } from './security/auth-interceptor/auth-interceptor.module';
 import { AuthService } from '../services/auth.service';
+import { HttpErrorHandlerModule } from './security/auth-interceptor/http-error-handle-interceptor.module';
 
 
 
@@ -12,7 +13,8 @@ import { AuthService } from '../services/auth.service';
     CommonModule,
 
     HttpClientModule,
-    AuthInterceptorModule
+    AuthInterceptorModule,
+    HttpErrorHandlerModule
   ],
   providers: [
     AuthService

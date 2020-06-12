@@ -62,7 +62,7 @@ export class AuthService {
     this.jwtPayload = null;
   }
 
-  isAccessTokenInvalido() {
+  isInvalidAccessToken() {
     const token = localStorage.getItem('token');
     const jwtHelper: JwtHelperService = new JwtHelperService();
 
